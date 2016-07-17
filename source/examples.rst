@@ -18,7 +18,7 @@ If you'd like to see every response that Artillery receives from the server, run
 Randomizing requests
 ####################
 
-Artillery's scenarios have the concept of *variables*, which can be used in strings with `{{ varName }}` / `{{{ varName }}}` (e.g. in URLs, or POST body payloads). There are three ways to create a variable:
+Artillery's scenarios have the concept of *variables*, which can be used in strings with ``{{ varName }}`` / ``{{{ varName }}}`` (e.g. in URLs, or POST body payloads). There are three ways to create a variable:
 
 - By capturing part of a response (see "Parsing JSON Responses" below)
 - By importing values from external CSV files

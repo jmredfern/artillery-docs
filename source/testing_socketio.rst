@@ -3,7 +3,7 @@ Testing Socket.io
 
 Artillery has first-class support for Socket.io. Set the ``engine`` attribute of a scenario definition to ``socketio`` to enable the Socket.io engine.
 
-The Socket.io engine allows for `HTTP <testing_http.thml>`_ actions to be used in scenarios alongside ``emit``, which is the main Socket.io action.
+The Socket.io engine allows for `HTTP <testing_http.html>`_ actions to be used in scenarios alongside ``emit``, which is the main Socket.io action.
 
 ``emit``
 ########
