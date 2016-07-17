@@ -3,7 +3,7 @@ Welcome to the Artillery documentation!
 
 Artillery is a simple but powerful load-generator that you can use to make your applications more resilient and more performant under high load. It scales up from running tests on your development laptop to running massive-scale tests from the cloud with the exact same workflow.
 
-If you're new to Artillery, `Getting Started <gettingstarted.html>`_ is a good place to start, followed by checking out some `Examples <examples.html>`_ and an overview of `how Artillery works <basicconcepts.html>`_. Then when you're writing your tests, the various references (`HTTP <testing_http.html>`_, `WebSockets <testing_websockets.html>`_, the `CLI <cli_reference.html>`_) may come in handy.
+If you're new to Artillery, `Getting Started <gettingstarted.html>`_ is a good place to start, followed by checking out some `Examples <examples.html>`_ and an overview of `how Artillery works <basicconcepts.html>`_. Then when you're writing your tests, the various references (`HTTP <testing_http.html>`_, `Socket.io <testing_socketio.html>`_, `WebSockets <testing_websockets.html>`_, the `CLI <cli_reference.html>`_) may come in handy.
 
 Happy load testing!
 
@@ -27,6 +27,7 @@ Contents:
    basicconcepts
    examples
    testing_http
+   testing_socketio
    testing_websockets
    script_reference
    cli_reference
