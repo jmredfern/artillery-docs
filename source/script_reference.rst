@@ -126,11 +126,13 @@ Payload files are in the CSV format and Artillery allows you to map each of the 
       },
       "scenarios": [
         {
-          "post": "/auth",
+          "post": {
+          "url": "/auth",
           "json": {
             "username": "{{ username }}",
             "password": "{{ password }}"
           }
+         }
         }
       ]
     }
