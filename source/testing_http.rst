@@ -157,7 +157,7 @@ SSL
 
 By default, Artillery will reject self-signed certificates. You can disable this behavior (for testing in a staging environment for example):
 
-- Pass ``--k`` (or ``--insecure``) option to ``artillery run`` or ``artillery quick``
+- Pass ``-k`` (or ``--insecure``) option to ``artillery run`` or ``artillery quick``
 - By setting the ``config.tls`` property in your test script like so:
 
 ::
