@@ -5,6 +5,8 @@ Set the ``"engine"`` attribute of a scenario definition to ``"ws"`` to use WebSo
 
 Two kinds of actions are supported: ``send`` and ``think``.
 
+The underlying WebSocket client can be configured with a ``"ws"`` section in the ``"config"`` section of your test script. For a list of available options, please see `WS library docs <https://github.com/websockets/ws/blob/master/doc/ws.md#new-wswebsocketaddress-protocols-options>`_.
+
 Example
 #######
 
@@ -12,10 +14,13 @@ Example
 
     {
       "config": {
-          "target": "ws://echo.websocket.org",
+          "target": "wss://echo.websocket.org",
           "phases": [
             {"duration": 20, "arrivalRate": 10}
-          ]
+          ],
+          "ws": {
+            "rejectUnauthorized": false // Ignore SSL certificate errors - can be useful in *development* with self-signed certs
+          }
       },
       "scenarios": [
         {
