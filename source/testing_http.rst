@@ -100,6 +100,27 @@ Optionally, it can also contain a ``transform`` attribute, which should be a sni
 
 Where ``this`` refers to the *context* of the virtual user running the scenario, i.e. an object containing all currently defined variables, including the one that has just been extracted from the response.
 
+Capturing multiple values
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Multiple values can be captured with an array of capture specs, e.g.:
+
+::
+
+    {"get":
+      {
+        "url": "/journeys",
+        "capture": [{
+          "xpath": "(//Journey)[1]/JourneyId/text()",
+          "transform": "this.JourneyId.toUpperCase()",
+          "as": "JourneyId"
+        }, {
+          "header": "x-my-custom-header",
+          "as": "headerValue"
+        }]
+      }
+    }
+
 An example
 ~~~~~~~~~~
 
