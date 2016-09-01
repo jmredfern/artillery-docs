@@ -249,7 +249,6 @@ This will make ``species`` and ``name`` variables available in scenario definiti
 Use those variables in your scenarios:
 ::
 
-
     { "post": {"url": "/pets", "json": { "name": "{{ name }}", "species": "{{ species }}" }} }
 
 Then tell ``artillery`` to use the payload file:
@@ -285,3 +284,112 @@ You can use the ``loop`` construct to loop through a number of requests in a sce
 If count is omitted, the loop will run indefinitely.
 
 ``loop`` is an array - any number of requests can be specified. Variables, cookie and response parsing will work as expected.
+
+The current step of the loop is available inside a loop through the ``$loopCount`` variable (for example going from 1 too 100 in the example above).
+
+Advanced: writing custom logic in Javascript
+#################################
+
+The HTTP engine has support for "hooks", which allow for custom JS functions to be called at certain points during the execution of a scenario.
+
+- ``beforeRequest`` - called before a request is sent; request parameters (URL, cookies, headers, body etc) can be customized here
+- ``afterResponse`` - called after a response has been received; the response can be inspected and custom variables can be set here
+
+Specifying a function to run
+~~~~~~~~~~~~~~~~~~
+
+``beforeRequest`` and ``afterResponse`` hooks can be set in a request spec like this:
+::
+
+  // ... a request in a scenario definition:
+  {"post":
+    {"url": "/some/route",
+      "beforeRequest": "setJSONBody",
+      "afterResponse": "logHeaders"
+    }
+  }
+
+This tells Artillery to run the ``setJSONBody`` function before the request is made, and to run the ``logHeaders`` function after the response has been received.
+
+Specifying multiple functions
+~~~~~~~~~~~~~~~~~~
+
+An array of function names can be specified too, in which case the functions will be run one after another.
+
+Setting scenario-level hooks
+~~~~~~~~~~~~~~~~~~~~~~
+
+Similarly, a scenario definition can have a ``beforeRequest``/``afterResponse`` attribute, which will make the functions specified run for every request in the scenario.
+
+Loading custom JS code
+~~~~~~~~~~~~~~~~~~~~
+
+To tell Artillery to load your custom code, set ``config.processor`` to path to your JS file:
+::
+
+  {
+    "config": {
+      "target": "https://my.app.dev",
+      "phases": [{"duration": 300, "arrivalRate": 1}],
+      "processor": "./my-functions.js"
+    },
+    "scenarios": [
+      // scenarios definitions here...
+    ]
+  }
+
+The JS file is expected to be a standard Node.js module:
+::
+
+  //
+  // my-functions.js
+  //
+  module.exports = {
+    setJSONBody: setJSONBody,
+    logHeaders: logHeaders
+  }
+
+  function setJSONBody(requestParams, context, ee, next) {
+    return next(); // MUST be called for the scenario to continue
+  }
+
+  function logHeaders(requestParams, response, context, ee, next) {
+    console.log(response.headers);
+    return next(); // MUST be called for the scenario to continue
+  }
+
+Function signatures
+^^^^^^^^^^^^^^^^^^
+
+``beforeRequest``
++++++++++++++++++
+
+A function invoked in a ``beforeRequest`` hook should have the following signature:
+::
+  function myBeforeRequestHandler(requestParams, context, ee, next) {
+  }
+
+Where:
+
+- ``requestParams`` is an object given to the `Request <https://github.com/request/request>`_ library. Use this parameter to customize what is sent in the request (headers, body, cookies etc)
+- ``context`` is the virtual user's context, ``context.vars`` is a dictionary containing all defined variables
+- ``ee`` is an event emitter that can be used to communicate with Artillery
+- ``next`` is the callback which must be called for the scenario to continue; it takes no arguments
+
+``afterResponse``
++++++++++++++++++
+
+A function invoked in an ``afterResponse`` hook should have the following signature:
+::
+  function myAfterResponseHandler(requestParams, reponse, context, ee, next) {
+  }
+
+Where:
+
+- ``requestParams`` is an object given to the `Request <https://github.com/request/request>`_ library. Use this parameter to customize what is sent in the request (headers, body, cookies etc)
+- ``response`` is likewise the response object from the `Request <https://github.com/request/request>`_ library. This object contains response headers, body etc.
+- ``context`` is the virtual user's context, ``context.vars`` is a dictionary containing all defined variables
+- ``ee`` is an event emitter that can be used to communicate with Artillery
+- ``next`` is the callback which must be called for the scenario to continue; it takes no arguments
+
+
