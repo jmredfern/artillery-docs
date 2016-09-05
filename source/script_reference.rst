@@ -138,7 +138,21 @@ Payload files are in the CSV format and Artillery allows you to map each of the 
     }
 
 
-``"payload"`` can also be an an array of such objects.
+To use multiple CSV files ``"payload"`` can also be an an array:
+
+::
+
+    "payload": [
+      {
+        "path": "./pets.csv",
+        "fields": ["species", "name"]
+      },
+      {
+        "path": "./urls.csv",
+        "fields": ["url"]
+      }
+    ]
+    
 
 Ordering
 --------
